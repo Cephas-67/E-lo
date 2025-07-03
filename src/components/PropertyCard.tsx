@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Card, CardContent } from './ui/card';
 import { Badge } from './ui/badge';
+import { Heart } from 'lucide-react';
 
 interface Property {
   id: string;
@@ -22,6 +23,7 @@ interface PropertyCardProps {
 
 const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isLiked, setIsLiked] = useState(false);
 
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % property.images.length);
@@ -33,6 +35,11 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('fr-FR').format(price);
+  };
+
+  const handleLike = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLiked(!isLiked);
   };
 
   return (
@@ -136,8 +143,26 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property }) => {
                 </div>
               </div>
               
-              <button className="text-benin-red hover:text-benin-red/80 transition-colors">
-                ❤️
+              <button 
+                onClick={handleLike}
+                className={`relative p-2 rounded-full transition-all duration-300 transform hover:scale-110 active:scale-95 ${
+                  isLiked 
+                    ? 'bg-red-50 dark:bg-red-900/20' 
+                    : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+                }`}
+              >
+                <Heart 
+                  className={`w-5 h-5 transition-all duration-300 ${
+                    isLiked 
+                      ? 'fill-red-500 text-red-500 animate-pulse' 
+                      : 'text-gray-400 hover:text-red-400'
+                  }`}
+                />
+                {isLiked && (
+                  <div className="absolute inset-0 pointer-events-none">
+                    <div className="w-full h-full rounded-full bg-red-500/20 animate-ping"></div>
+                  </div>
+                )}
               </button>
             </div>
           </div>
