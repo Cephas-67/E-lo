@@ -93,7 +93,7 @@ const MOCK_PROPERTIES = [
     bedrooms: 3,
     bathrooms: 2,
     area: 110,
-    type: 'Duplex'
+    type: 'Entrer/Coucher'
   }
 ];
 
@@ -107,7 +107,7 @@ const PropertiesSection: React.FC = () => {
     { value: 'Appartement', label: 'Appartements' },
     { value: 'Maison', label: 'Maisons' },
     { value: 'Studio', label: 'Studios' },
-    { value: 'Duplex', label: 'Duplex' }
+    { value: 'Entrer/Coucher', label: 'Entrer/Coucher' }
   ];
 
   const filteredProperties = filter === 'all' 
