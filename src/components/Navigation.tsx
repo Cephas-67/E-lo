@@ -5,15 +5,20 @@ import { useAuth } from '../contexts/AuthContext';
 import { Button } from './ui/button';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
+import { Link, useLocation } from 'react-router-dom';
+import { User, Home, MessageSquare, Bot } from 'lucide-react';
 
 interface NavigationProps {
   onAuthClick: () => void;
+  onChatToggle: () => void;
+  onAIToggle: () => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ onAuthClick }) => {
+const Navigation: React.FC<NavigationProps> = ({ onAuthClick, onChatToggle, onAIToggle }) => {
   const { theme, toggleTheme } = useTheme();
   const { user, logout, isAuthenticated } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,7 +40,7 @@ const Navigation: React.FC<NavigationProps> = ({ onAuthClick }) => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2">
             <div className="w-10 h-10 bg-gradient-to-r from-benin-green to-benin-blue rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">e</span>
             </div>
@@ -43,19 +48,43 @@ const Navigation: React.FC<NavigationProps> = ({ onAuthClick }) => {
               <h1 className="text-xl font-bold gradient-text">e-lo Bénin</h1>
               <p className="text-xs text-gray-600 dark:text-gray-400">Location Immobilière</p>
             </div>
-          </div>
+          </Link>
 
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#accueil" className="text-gray-700 dark:text-gray-300 hover:text-benin-green transition-colors font-medium">
-              Accueil
-            </a>
-            <a href="#proprietes" className="text-gray-700 dark:text-gray-300 hover:text-benin-blue transition-colors font-medium">
-              Propriétés
-            </a>
-            <a href="#services" className="text-gray-700 dark:text-gray-300 hover:text-benin-yellow transition-colors font-medium">
-              Services
-            </a>
+            {isAuthenticated ? (
+              <>
+                <Link 
+                  to="/dashboard" 
+                  className={`flex items-center space-x-1 font-medium transition-colors ${
+                    location.pathname === '/dashboard' 
+                      ? 'text-benin-green' 
+                      : 'text-gray-700 dark:text-gray-300 hover:text-benin-green'
+                  }`}
+                >
+                  <Home className="w-4 h-4" />
+                  <span>Tableau de Bord</span>
+                </Link>
+                <a href="#proprietes" className="text-gray-700 dark:text-gray-300 hover:text-benin-blue transition-colors font-medium">
+                  Propriétés
+                </a>
+                <a href="#services" className="text-gray-700 dark:text-gray-300 hover:text-benin-yellow transition-colors font-medium">
+                  Services
+                </a>
+              </>
+            ) : (
+              <>
+                <a href="#accueil" className="text-gray-700 dark:text-gray-300 hover:text-benin-green transition-colors font-medium">
+                  Accueil
+                </a>
+                <a href="#proprietes" className="text-gray-700 dark:text-gray-300 hover:text-benin-blue transition-colors font-medium">
+                  Propriétés
+                </a>
+                <a href="#services" className="text-gray-700 dark:text-gray-300 hover:text-benin-yellow transition-colors font-medium">
+                  Services
+                </a>
+              </>
+            )}
             <a href="#contact" className="text-gray-700 dark:text-gray-300 hover:text-benin-red transition-colors font-medium">
               Contact
             </a>
@@ -63,6 +92,30 @@ const Navigation: React.FC<NavigationProps> = ({ onAuthClick }) => {
 
           {/* Right Side */}
           <div className="flex items-center space-x-4">
+            {/* AI Assistant Button */}
+            {isAuthenticated && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onAIToggle}
+                className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600"
+              >
+                <Bot className="w-5 h-5" />
+              </Button>
+            )}
+
+            {/* Chat Button */}
+            {isAuthenticated && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onChatToggle}
+                className="w-10 h-10 rounded-full bg-benin-green text-white hover:bg-benin-green/90"
+              >
+                <MessageSquare className="w-5 h-5" />
+              </Button>
+            )}
+
             {/* Theme Toggle */}
             <Button
               variant="ghost"
@@ -91,6 +144,12 @@ const Navigation: React.FC<NavigationProps> = ({ onAuthClick }) => {
                     <p className="text-xs text-gray-600 dark:text-gray-400">{user.email}</p>
                     <p className="text-xs text-benin-green capitalize">{user.role}</p>
                   </div>
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile" className="flex items-center space-x-2 w-full">
+                      <User className="w-4 h-4" />
+                      <span>Mon Profil</span>
+                    </Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={handleLogout} className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20">
                     Se déconnecter
                   </DropdownMenuItem>
