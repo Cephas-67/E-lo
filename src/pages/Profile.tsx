@@ -4,23 +4,46 @@ import { useAuth } from '../contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { Textarea } from '../components/ui/textarea';
 import { Badge } from '../components/ui/badge';
-import { User, Home, MessageSquare, Settings, Star, MapPin, Phone, Mail } from 'lucide-react';
+import { User, Home, MessageSquare, Settings, Star, MapPin, Phone, Mail, Camera, Upload, Save, X } from 'lucide-react';
+import { useToast } from '../hooks/use-toast';
 
 const Profile = () => {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [profileData, setProfileData] = useState({
     name: user?.name || '',
     email: user?.email || '',
     phone: '+229 XX XX XX XX',
     address: 'Cotonou, Bénin',
-    bio: 'Passionné par l\'immobilier béninois'
+    bio: 'Passionné par l\'immobilier béninois',
+    profileImage: null as string | null,
+    coverImage: null as string | null
   });
 
   const handleSave = () => {
     setIsEditing(false);
-    // Logique de sauvegarde ici
+    toast({
+      title: "Profil mis à jour",
+      description: "Vos informations ont été sauvegardées avec succès.",
+    });
+  };
+
+  const handleImageUpload = (type: 'profile' | 'cover', event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        setProfileData(prev => ({
+          ...prev,
+          [type === 'profile' ? 'profileImage' : 'coverImage']: result
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const renderProprietaireContent = () => (
@@ -135,45 +158,160 @@ const Profile = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
+          {/* Photo de couverture */}
+          <div className="relative h-48 bg-gradient-to-r from-benin-green to-benin-blue rounded-t-lg overflow-hidden">
+            {profileData.coverImage && (
+              <img src={profileData.coverImage} alt="Couverture" className="w-full h-full object-cover" />
+            )}
+            {isEditing && (
+              <div className="absolute top-4 right-4">
+                <label htmlFor="cover-upload" className="cursor-pointer">
+                  <div className="bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors">
+                    <Camera className="w-5 h-5" />
+                  </div>
+                  <input
+                    id="cover-upload"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => handleImageUpload('cover', e)}
+                  />
+                </label>
+              </div>
+            )}
+          </div>
+
           {/* En-tête du profil */}
-          <Card className="mb-8">
-            <CardContent className="p-6">
+          <Card className="mb-8 -mt-6 relative">
+            <CardContent className="p-6 pt-12">
               <div className="flex items-center space-x-6">
-                <div className="w-24 h-24 bg-gradient-to-r from-benin-green to-benin-blue rounded-full flex items-center justify-center">
-                  <span className="text-white text-3xl font-bold">
-                    {user?.name?.charAt(0).toUpperCase()}
-                  </span>
+                <div className="relative -mt-16">
+                  <div className="w-24 h-24 bg-gradient-to-r from-benin-green to-benin-blue rounded-full flex items-center justify-center border-4 border-white dark:border-gray-800 overflow-hidden">
+                    {profileData.profileImage ? (
+                      <img src={profileData.profileImage} alt="Profil" className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-white text-3xl font-bold">
+                        {user?.name?.charAt(0).toUpperCase()}
+                      </span>
+                    )}
+                  </div>
+                  {isEditing && (
+                    <label htmlFor="profile-upload" className="absolute bottom-0 right-0 cursor-pointer">
+                      <div className="bg-benin-green text-white p-1 rounded-full hover:bg-benin-green/90 transition-colors">
+                        <Camera className="w-4 h-4" />
+                      </div>
+                      <input
+                        id="profile-upload"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => handleImageUpload('profile', e)}
+                      />
+                    </label>
+                  )}
                 </div>
+                
                 <div className="flex-1">
                   <div className="flex items-center space-x-4 mb-2">
-                    <h1 className="text-2xl font-bold">{user?.name}</h1>
+                    {isEditing ? (
+                      <Input
+                        value={profileData.name}
+                        onChange={(e) => setProfileData(prev => ({ ...prev, name: e.target.value }))}
+                        className="text-2xl font-bold border-0 p-0 h-auto"
+                      />
+                    ) : (
+                      <h1 className="text-2xl font-bold">{profileData.name}</h1>
+                    )}
                     <Badge className="bg-benin-green text-white capitalize">
                       {user?.role}
                     </Badge>
                   </div>
-                  <div className="flex items-center space-x-4 text-gray-600 dark:text-gray-400">
-                    <div className="flex items-center space-x-1">
-                      <Mail className="w-4 h-4" />
-                      <span>{user?.email}</span>
+                  
+                  <div className="space-y-2">
+                    <div className="flex items-center space-x-4 text-gray-600 dark:text-gray-400">
+                      <div className="flex items-center space-x-1">
+                        <Mail className="w-4 h-4" />
+                        {isEditing ? (
+                          <Input
+                            value={profileData.email}
+                            onChange={(e) => setProfileData(prev => ({ ...prev, email: e.target.value }))}
+                            className="border-0 p-0 h-auto text-sm"
+                          />
+                        ) : (
+                          <span>{profileData.email}</span>
+                        )}
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Phone className="w-4 h-4" />
+                        {isEditing ? (
+                          <Input
+                            value={profileData.phone}
+                            onChange={(e) => setProfileData(prev => ({ ...prev, phone: e.target.value }))}
+                            className="border-0 p-0 h-auto text-sm"
+                          />
+                        ) : (
+                          <span>{profileData.phone}</span>
+                        )}
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <MapPin className="w-4 h-4" />
+                        {isEditing ? (
+                          <Input
+                            value={profileData.address}
+                            onChange={(e) => setProfileData(prev => ({ ...prev, address: e.target.value }))}
+                            className="border-0 p-0 h-auto text-sm"
+                          />
+                        ) : (
+                          <span>{profileData.address}</span>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-1">
-                      <Phone className="w-4 h-4" />
-                      <span>{profileData.phone}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <MapPin className="w-4 h-4" />
-                      <span>{profileData.address}</span>
+                    
+                    <div className="mt-2">
+                      {isEditing ? (
+                        <Textarea
+                          value={profileData.bio}
+                          onChange={(e) => setProfileData(prev => ({ ...prev, bio: e.target.value }))}
+                          className="text-sm resize-none"
+                          rows={2}
+                        />
+                      ) : (
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{profileData.bio}</p>
+                      )}
                     </div>
                   </div>
                 </div>
-                <Button 
-                  onClick={() => setIsEditing(!isEditing)}
-                  variant="outline"
-                  className="flex items-center space-x-2"
-                >
-                  <Settings className="w-4 h-4" />
-                  <span>Modifier</span>
-                </Button>
+                
+                <div className="flex space-x-2">
+                  {isEditing ? (
+                    <>
+                      <Button 
+                        onClick={handleSave}
+                        className="bg-benin-green hover:bg-benin-green/90 flex items-center space-x-2"
+                      >
+                        <Save className="w-4 h-4" />
+                        <span>Sauvegarder</span>
+                      </Button>
+                      <Button 
+                        onClick={() => setIsEditing(false)}
+                        variant="outline"
+                        className="flex items-center space-x-2"
+                      >
+                        <X className="w-4 h-4" />
+                        <span>Annuler</span>
+                      </Button>
+                    </>
+                  ) : (
+                    <Button 
+                      onClick={() => setIsEditing(true)}
+                      variant="outline"
+                      className="flex items-center space-x-2"
+                    >
+                      <Settings className="w-4 h-4" />
+                      <span>Modifier</span>
+                    </Button>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>

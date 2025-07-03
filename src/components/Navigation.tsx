@@ -5,16 +5,27 @@ import { useAuth } from '../contexts/AuthContext';
 import { Button } from './ui/button';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { Link, useLocation } from 'react-router-dom';
-import { User, Home, MessageSquare, Bot } from 'lucide-react';
+import { User, Home, MessageSquare, Bot, Search, FileText, Map, Mail } from 'lucide-react';
 
 interface NavigationProps {
   onAuthClick: () => void;
   onChatToggle: () => void;
   onAIToggle: () => void;
+  onRentalRequest?: () => void;
+  onRentalOffer?: () => void;
+  onMapView?: () => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ onAuthClick, onChatToggle, onAIToggle }) => {
+const Navigation: React.FC<NavigationProps> = ({ 
+  onAuthClick, 
+  onChatToggle, 
+  onAIToggle,
+  onRentalRequest,
+  onRentalOffer,
+  onMapView
+}) => {
   const { theme, toggleTheme } = useTheme();
   const { user, logout, isAuthenticated } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -65,6 +76,17 @@ const Navigation: React.FC<NavigationProps> = ({ onAuthClick, onChatToggle, onAI
                   <Home className="w-4 h-4" />
                   <span>Tableau de Bord</span>
                 </Link>
+                <Link 
+                  to="/messages" 
+                  className={`flex items-center space-x-1 font-medium transition-colors ${
+                    location.pathname === '/messages' 
+                      ? 'text-benin-green' 
+                      : 'text-gray-700 dark:text-gray-300 hover:text-benin-green'
+                  }`}
+                >
+                  <Mail className="w-4 h-4" />
+                  <span>Messages</span>
+                </Link>
                 <a href="#proprietes" className="text-gray-700 dark:text-gray-300 hover:text-benin-blue transition-colors font-medium">
                   Propriétés
                 </a>
@@ -91,29 +113,96 @@ const Navigation: React.FC<NavigationProps> = ({ onAuthClick, onChatToggle, onAI
           </div>
 
           {/* Right Side */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2">
+            {/* Action Buttons for authenticated users */}
+            {isAuthenticated && (
+              <>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={onRentalRequest}
+                      className="w-10 h-10 rounded-full bg-blue-500 text-white hover:bg-blue-600"
+                    >
+                      <Search className="w-4 h-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Faire une demande de location</p>
+                  </TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={onRentalOffer}
+                      className="w-10 h-10 rounded-full bg-orange-500 text-white hover:bg-orange-600"
+                    >
+                      <FileText className="w-4 h-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Faire une offre de location</p>
+                  </TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={onMapView}
+                      className="w-10 h-10 rounded-full bg-green-500 text-white hover:bg-green-600"
+                    >
+                      <Map className="w-4 h-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Voir la carte</p>
+                  </TooltipContent>
+                </Tooltip>
+              </>
+            )}
+
             {/* AI Assistant Button */}
             {isAuthenticated && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onAIToggle}
-                className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600"
-              >
-                <Bot className="w-5 h-5" />
-              </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={onAIToggle}
+                    className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600"
+                  >
+                    <Bot className="w-5 h-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Assistant IA</p>
+                </TooltipContent>
+              </Tooltip>
             )}
 
             {/* Chat Button */}
             {isAuthenticated && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onChatToggle}
-                className="w-10 h-10 rounded-full bg-benin-green text-white hover:bg-benin-green/90"
-              >
-                <MessageSquare className="w-5 h-5" />
-              </Button>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={onChatToggle}
+                    className="w-10 h-10 rounded-full bg-benin-green text-white hover:bg-benin-green/90"
+                  >
+                    <MessageSquare className="w-5 h-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Chat support</p>
+                </TooltipContent>
+              </Tooltip>
             )}
 
             {/* Theme Toggle */}
