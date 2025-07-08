@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { toast } from '@/hooks/use-toast';
-import { ArrowLeft } from 'lucide-react';
+import BackButton from '../components/BackButton';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -32,12 +31,7 @@ const ForgotPassword = () => {
     <div className="min-h-screen bg-gradient-to-br from-benin-green/10 via-white to-benin-blue/10 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-8">
-          <div className="flex items-center mb-6">
-            <Link to="/" className="flex items-center text-benin-green hover:text-benin-blue transition-colors">
-              <ArrowLeft className="h-5 w-5 mr-2" />
-              Retour
-            </Link>
-          </div>
+          <BackButton to="/" />
 
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
