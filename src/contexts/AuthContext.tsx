@@ -8,12 +8,18 @@ interface User {
   email: string;
   name: string;
   role: UserRole;
+  bio?: string;
+  location?: string;
+  phone?: string;
+  website?: string;
+  profilePicture?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string, role?: UserRole) => Promise<boolean>;
   register: (email: string, password: string, name: string, role: UserRole) => Promise<boolean>;
+  updateUserProfile: (profileData: Partial<User>) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
 }
@@ -63,6 +69,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return true;
   };
 
+  const updateUserProfile = async (profileData: Partial<User>): Promise<void> => {
+    // Simulation d'une mise à jour de profil
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    if (user) {
+      const updatedUser = { ...user, ...profileData };
+      setUser(updatedUser);
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('user');
@@ -81,6 +98,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       user,
       login,
       register,
+      updateUserProfile,
       logout,
       isAuthenticated: !!user
     }}>
