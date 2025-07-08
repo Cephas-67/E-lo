@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth, UserRole } from '../contexts/AuthContext';
@@ -7,6 +6,7 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Card, CardContent } from './ui/card';
 import { toast } from '@/hooks/use-toast';
+import BackButton from './BackButton';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -117,17 +117,25 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
           isLogin ? 'translate-x-0' : '-translate-x-full'
         }`}>
           <div className="w-full max-w-sm mx-auto">
-            <div className="flex justify-between items-center mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                {isLogin ? 'Connexion' : 'Inscription'}
-              </h3>
+            <div className="flex justify-between items-center mb-4">
+              <BackButton 
+                className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors"
+                variant="ghost"
+                to="/"
+              />
               <Button
                 variant="ghost"
                 onClick={onClose}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-500 hover:text-gray-700 p-1"
               >
                 ✕
               </Button>
+            </div>
+
+            <div className="mb-8">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                {isLogin ? 'Connexion' : 'Inscription'}
+              </h3>
             </div>
 
             {/* Social Login Buttons */}
