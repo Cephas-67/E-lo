@@ -6,7 +6,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Badge } from '../components/ui/badge';
-import { User, Home, MessageSquare, Settings, Star, MapPin, Phone, Mail, Camera, Save, X, Calendar, Eye, Heart, TrendingUp } from 'lucide-react';
+import { User, Home, MessageSquare, Settings, Star, MapPin, Phone, Mail, Camera, Save, X, Calendar, Eye, Heart, TrendingUp, Search } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 
 const Profile = () => {
