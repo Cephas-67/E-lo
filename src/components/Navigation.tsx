@@ -63,8 +63,8 @@ const Navigation: React.FC<NavigationProps> = ({
             </div>
           </Link>
 
-          {/* Navigation Links - Hidden on tablet and mobile, show on large screens */}
-          <div className="hidden lg:flex items-center space-x-6 xl:space-x-10">
+          {/* Navigation Links - Show on tablets and desktop */}
+          <div className="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-10">
             {isAuthenticated ? (
               <>
                 <Link 
@@ -114,8 +114,8 @@ const Navigation: React.FC<NavigationProps> = ({
             </a>
           </div>
 
-          {/* Mobile/Tablet Menu and Actions - Show on screens smaller than lg */}
-          <div className="flex items-center space-x-2 lg:hidden">
+          {/* Mobile Menu Button - Show only on small screens */}
+          <div className="flex items-center space-x-2 md:hidden">
             {/* Auth Button for Mobile */}
             {!isAuthenticated && (
               <Button
@@ -373,7 +373,95 @@ const Navigation: React.FC<NavigationProps> = ({
             </Sheet>
           </div>
 
-          {/* Right Side - Desktop and Large Tablets */}
+          {/* Tablet Actions - Show only on medium screens */}
+          <div className="hidden md:flex lg:hidden items-center space-x-2">
+            {/* Theme Toggle for tablets */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleTheme}
+              className="w-10 h-10 rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105"
+            >
+              {theme === 'light' ? '🌙' : '☀️'}
+            </Button>
+
+            {/* User Section for tablets */}
+            {isAuthenticated && user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105">
+                    <Avatar className="h-10 w-10">
+                      <AvatarFallback className="bg-benin-green text-white text-sm">
+                        {user.name.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-64 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-xl z-50" align="end">
+                  <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                    <p className="text-sm font-medium">{user.name}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">{user.email}</p>
+                    <p className="text-xs text-benin-green capitalize font-medium">{user.role}</p>
+                  </div>
+                  <DropdownMenuItem asChild>
+                    <Link to="/profile" className="flex items-center space-x-2 w-full">
+                      <User className="w-4 h-4" />
+                      <span>Mon Profil</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <button 
+                      onClick={onRentalRequest}
+                      className="flex items-center space-x-2 w-full"
+                    >
+                      <Search className="w-4 h-4" />
+                      <span>Demande de location</span>
+                    </button>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <button 
+                      onClick={onRentalOffer}
+                      className="flex items-center space-x-2 w-full"
+                    >
+                      <FileText className="w-4 h-4" />
+                      <span>Offre de location</span>
+                    </button>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <button 
+                      onClick={onAIToggle}
+                      className="flex items-center space-x-2 w-full"
+                    >
+                      <Bot className="w-4 h-4" />
+                      <span>Assistant IA</span>
+                    </button>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <button 
+                      onClick={onChatToggle}
+                      className="flex items-center space-x-2 w-full"
+                    >
+                      <MessageSquare className="w-4 h-4" />
+                      <span>Chat support</span>
+                    </button>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout} className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20">
+                    Se déconnecter
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button
+                onClick={onAuthClick}
+                size="sm"
+                className="bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white font-medium px-4 py-2 rounded-full transition-all duration-300"
+              >
+                Se connecter
+              </Button>
+            )}
+          </div>
+
+          {/* Desktop Actions - Show only on large screens */}
           <div className="hidden lg:flex items-center space-x-3 xl:space-x-4">
             {/* Action Buttons for authenticated users only */}
             {isAuthenticated && (
