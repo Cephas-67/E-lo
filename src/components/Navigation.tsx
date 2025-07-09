@@ -114,8 +114,19 @@ const Navigation: React.FC<NavigationProps> = ({
             </a>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          {/* Mobile Menu Button and Auth Button */}
+          <div className="flex items-center space-x-3 md:hidden">
+            {/* Auth Button for Mobile */}
+            {!isAuthenticated && (
+              <Button
+                onClick={onAuthClick}
+                size="sm"
+                className="bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white font-medium px-4 py-2 rounded-full transition-all duration-300 text-xs"
+              >
+                Se connecter
+              </Button>
+            )}
+            
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button

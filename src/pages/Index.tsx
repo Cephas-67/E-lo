@@ -1,7 +1,5 @@
 
 import React, { useState } from 'react';
-import { ThemeProvider } from '../contexts/ThemeContext';
-import { AuthProvider } from '../contexts/AuthContext';
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
 import PropertiesSection from '../components/PropertiesSection';
@@ -48,52 +46,48 @@ const Index = () => {
   };
 
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <div className="min-h-screen bg-background text-foreground">
-          <Navigation 
-            onAuthClick={handleAuthClick} 
-            onChatToggle={handleChatToggle}
-            onAIToggle={handleAIToggle}
-            onRentalRequest={() => setIsRentalRequestOpen(true)}
-            onRentalOffer={() => setIsRentalOfferOpen(true)}
-            onMapView={() => setIsMapViewOpen(true)}
-          />
-          
-          <main>
-            <HeroSection onAuthClick={handleAuthClick} />
-            <PropertiesSection />
-            <ServicesSection />
-            <ContactSection />
-          </main>
-          
-          <Footer />
-          
-          <AuthModal isOpen={isAuthModalOpen} onClose={handleAuthClose} />
-          <ChatWidget 
-            isOpen={isChatOpen} 
-            onClose={handleChatClose} 
-            onToggle={handleChatToggle}
-          />
-          <AIExplorer 
-            isOpen={isAIExplorerOpen} 
-            onClose={handleAIClose}
-          />
-          <RentalRequestForm 
-            isOpen={isRentalRequestOpen} 
-            onClose={() => setIsRentalRequestOpen(false)}
-          />
-          <RentalOfferForm 
-            isOpen={isRentalOfferOpen} 
-            onClose={() => setIsRentalOfferOpen(false)}
-          />
-          <MapView 
-            isOpen={isMapViewOpen} 
-            onClose={() => setIsMapViewOpen(false)}
-          />
-        </div>
-      </AuthProvider>
-    </ThemeProvider>
+    <div className="min-h-screen bg-background text-foreground">
+      <Navigation 
+        onAuthClick={handleAuthClick} 
+        onChatToggle={handleChatToggle}
+        onAIToggle={handleAIToggle}
+        onRentalRequest={() => setIsRentalRequestOpen(true)}
+        onRentalOffer={() => setIsRentalOfferOpen(true)}
+        onMapView={() => setIsMapViewOpen(true)}
+      />
+      
+      <main>
+        <HeroSection onAuthClick={handleAuthClick} />
+        <PropertiesSection />
+        <ServicesSection />
+        <ContactSection />
+      </main>
+      
+      <Footer />
+      
+      <AuthModal isOpen={isAuthModalOpen} onClose={handleAuthClose} />
+      <ChatWidget 
+        isOpen={isChatOpen} 
+        onClose={handleChatClose} 
+        onToggle={handleChatToggle}
+      />
+      <AIExplorer 
+        isOpen={isAIExplorerOpen} 
+        onClose={handleAIClose}
+      />
+      <RentalRequestForm 
+        isOpen={isRentalRequestOpen} 
+        onClose={() => setIsRentalRequestOpen(false)}
+      />
+      <RentalOfferForm 
+        isOpen={isRentalOfferOpen} 
+        onClose={() => setIsRentalOfferOpen(false)}
+      />
+      <MapView 
+        isOpen={isMapViewOpen} 
+        onClose={() => setIsMapViewOpen(false)}
+      />
+    </div>
   );
 };
 
