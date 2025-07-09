@@ -15,10 +15,15 @@ export default {
 			center: true,
 			padding: '2rem',
 			screens: {
+				'xs': '475px',
 				'2xl': '1400px'
 			}
 		},
 		extend: {
+			screens: {
+				'xs': '475px',
+				'3xl': '1600px',
+			},
 			colors: {
 				// E-lo Bénin custom colors
 				'benin-green': '#10B981',

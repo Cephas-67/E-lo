@@ -50,21 +50,21 @@ const Navigation: React.FC<NavigationProps> = ({
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled ? 'floating-nav shadow-xl backdrop-blur-md bg-white/90 dark:bg-gray-900/90' : 'bg-transparent'
     }`}>
-      <div className="container mx-auto px-6 py-4">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-gradient-to-r from-benin-green to-benin-blue rounded-xl flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-xl">e</span>
+          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-gradient-to-r from-benin-green to-benin-blue rounded-lg md:rounded-xl flex items-center justify-center shadow-lg">
+              <span className="text-white font-bold text-sm sm:text-lg md:text-xl">e</span>
             </div>
-            <div>
-              <h1 className="text-xl font-bold gradient-text">e-lo Bénin</h1>
-              <p className="text-xs text-gray-600 dark:text-gray-400">Location Immobilière</p>
+            <div className="hidden xs:block">
+              <h1 className="text-base sm:text-lg md:text-xl font-bold gradient-text">e-lo Bénin</h1>
+              <p className="text-xs text-gray-600 dark:text-gray-400 hidden sm:block">Location Immobilière</p>
             </div>
           </Link>
 
-          {/* Navigation Links */}
-          <div className="hidden md:flex items-center space-x-10">
+          {/* Navigation Links - Hidden on tablet and mobile, show on large screens */}
+          <div className="hidden lg:flex items-center space-x-6 xl:space-x-10">
             {isAuthenticated ? (
               <>
                 <Link 
@@ -114,8 +114,8 @@ const Navigation: React.FC<NavigationProps> = ({
             </a>
           </div>
 
-          {/* Mobile Menu Button and Auth Button */}
-          <div className="flex items-center space-x-2 md:hidden">
+          {/* Mobile/Tablet Menu and Actions - Show on screens smaller than lg */}
+          <div className="flex items-center space-x-2 lg:hidden">
             {/* Auth Button for Mobile */}
             {!isAuthenticated && (
               <Button
@@ -373,11 +373,11 @@ const Navigation: React.FC<NavigationProps> = ({
             </Sheet>
           </div>
 
-          {/* Right Side - Desktop */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Right Side - Desktop and Large Tablets */}
+          <div className="hidden lg:flex items-center space-x-3 xl:space-x-4">
             {/* Action Buttons for authenticated users only */}
             {isAuthenticated && (
-              <div className="flex items-center space-x-3 bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-2 shadow-lg">
+              <div className="flex items-center space-x-2 xl:space-x-3 bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-1.5 xl:p-2 shadow-lg">
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Button
