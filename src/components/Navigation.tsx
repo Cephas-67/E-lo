@@ -6,8 +6,9 @@ import { Button } from './ui/button';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { Link, useLocation } from 'react-router-dom';
-import { User, Home, MessageSquare, Bot, Search, FileText, Map, Mail } from 'lucide-react';
+import { User, Home, MessageSquare, Bot, Search, FileText, Map, Mail, Menu, X } from 'lucide-react';
 
 interface NavigationProps {
   onAuthClick: () => void;
@@ -29,6 +30,7 @@ const Navigation: React.FC<NavigationProps> = ({
   const { theme, toggleTheme } = useTheme();
   const { user, logout, isAuthenticated } = useAuth();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -112,8 +114,256 @@ const Navigation: React.FC<NavigationProps> = ({
             </a>
           </div>
 
-          {/* Right Side */}
-          <div className="flex items-center space-x-4">
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-10 h-10 rounded-lg"
+                >
+                  <Menu className="w-5 h-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-80 p-0">
+                <div className="flex flex-col h-full">
+                  {/* Header */}
+                  <div className="flex items-center justify-between p-6 border-b">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-gradient-to-r from-benin-green to-benin-blue rounded-lg flex items-center justify-center">
+                        <span className="text-white font-bold">e</span>
+                      </div>
+                      <div>
+                        <h2 className="font-bold gradient-text">e-lo Bénin</h2>
+                        <p className="text-xs text-muted-foreground">Location Immobilière</p>
+                      </div>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="w-8 h-8 rounded-lg"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+
+                  {/* User Info for authenticated users */}
+                  {isAuthenticated && user && (
+                    <div className="p-6 border-b bg-muted/20">
+                      <div className="flex items-center space-x-3">
+                        <Avatar className="h-12 w-12">
+                          <AvatarFallback className="bg-benin-green text-white text-lg">
+                            {user.name.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">{user.name}</p>
+                          <p className="text-sm text-muted-foreground">{user.email}</p>
+                          <p className="text-xs text-benin-green capitalize font-medium">{user.role}</p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Navigation Links */}
+                  <div className="flex-1 p-6">
+                    <nav className="space-y-4">
+                      {isAuthenticated ? (
+                        <>
+                          <Link 
+                            to="/dashboard" 
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
+                              location.pathname === '/dashboard' 
+                                ? 'bg-benin-green/10 text-benin-green' 
+                                : 'hover:bg-muted'
+                            }`}
+                          >
+                            <Home className="w-5 h-5" />
+                            <span>Tableau de Bord</span>
+                          </Link>
+                          <Link 
+                            to="/messages" 
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
+                              location.pathname === '/messages' 
+                                ? 'bg-benin-green/10 text-benin-green' 
+                                : 'hover:bg-muted'
+                            }`}
+                          >
+                            <Mail className="w-5 h-5" />
+                            <span>Messages</span>
+                          </Link>
+                          <Link 
+                            to="/profile" 
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
+                              location.pathname === '/profile' 
+                                ? 'bg-benin-green/10 text-benin-green' 
+                                : 'hover:bg-muted'
+                            }`}
+                          >
+                            <User className="w-5 h-5" />
+                            <span>Mon Profil</span>
+                          </Link>
+                          <a 
+                            href="#proprietes" 
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                          >
+                            <FileText className="w-5 h-5" />
+                            <span>Propriétés</span>
+                          </a>
+                          <a 
+                            href="#services" 
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                          >
+                            <Bot className="w-5 h-5" />
+                            <span>Services</span>
+                          </a>
+                        </>
+                      ) : (
+                        <>
+                          <a 
+                            href="#accueil" 
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                          >
+                            <Home className="w-5 h-5" />
+                            <span>Accueil</span>
+                          </a>
+                          <a 
+                            href="#proprietes" 
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                          >
+                            <FileText className="w-5 h-5" />
+                            <span>Propriétés</span>
+                          </a>
+                          <a 
+                            href="#services" 
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                          >
+                            <Bot className="w-5 h-5" />
+                            <span>Services</span>
+                          </a>
+                        </>
+                      )}
+                      <a 
+                        href="#contact" 
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                      >
+                        <Mail className="w-5 h-5" />
+                        <span>Contact</span>
+                      </a>
+                    </nav>
+
+                    {/* Action Buttons for authenticated users */}
+                    {isAuthenticated && (
+                      <div className="mt-8 space-y-3">
+                        <h3 className="text-sm font-medium text-muted-foreground mb-3">Actions rapides</h3>
+                        <Button
+                          onClick={() => {
+                            onRentalRequest?.();
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="w-full justify-start bg-blue-500 hover:bg-blue-600 text-white"
+                        >
+                          <Search className="w-4 h-4 mr-2" />
+                          Demande de location
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            onRentalOffer?.();
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="w-full justify-start bg-orange-500 hover:bg-orange-600 text-white"
+                        >
+                          <FileText className="w-4 h-4 mr-2" />
+                          Offre de location
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            onMapView?.();
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="w-full justify-start bg-green-500 hover:bg-green-600 text-white"
+                        >
+                          <Map className="w-4 h-4 mr-2" />
+                          Voir la carte
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            onAIToggle();
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="w-full justify-start bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                        >
+                          <Bot className="w-4 h-4 mr-2" />
+                          Assistant IA
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            onChatToggle();
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="w-full justify-start bg-benin-green hover:bg-benin-green/90 text-white"
+                        >
+                          <MessageSquare className="w-4 h-4 mr-2" />
+                          Chat support
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Footer */}
+                  <div className="p-6 border-t space-y-3">
+                    <Button
+                      variant="outline"
+                      onClick={toggleTheme}
+                      className="w-full justify-start"
+                    >
+                      {theme === 'light' ? '🌙' : '☀️'}
+                      <span className="ml-2">
+                        {theme === 'light' ? 'Mode sombre' : 'Mode clair'}
+                      </span>
+                    </Button>
+                    
+                    {isAuthenticated && user ? (
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          handleLogout();
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="w-full justify-start text-red-600 border-red-200 hover:bg-red-50"
+                      >
+                        Se déconnecter
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => {
+                          onAuthClick();
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="w-full bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white"
+                      >
+                        Se connecter
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+
+          {/* Right Side - Desktop */}
+          <div className="hidden md:flex items-center space-x-4">
             {/* Action Buttons for authenticated users only */}
             {isAuthenticated && (
               <div className="flex items-center space-x-3 bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-2 shadow-lg">
