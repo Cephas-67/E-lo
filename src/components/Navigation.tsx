@@ -115,15 +115,15 @@ const Navigation: React.FC<NavigationProps> = ({
           </div>
 
           {/* Mobile Menu Button and Auth Button */}
-          <div className="flex items-center space-x-3 md:hidden">
+          <div className="flex items-center space-x-2 md:hidden">
             {/* Auth Button for Mobile */}
             {!isAuthenticated && (
               <Button
                 onClick={onAuthClick}
                 size="sm"
-                className="bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white font-medium px-4 py-2 rounded-full transition-all duration-300 text-xs"
+                className="bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white font-medium px-3 py-1.5 rounded-full transition-all duration-300 text-xs whitespace-nowrap"
               >
-                Se connecter
+                Connexion
               </Button>
             )}
             
