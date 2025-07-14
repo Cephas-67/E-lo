@@ -134,7 +134,7 @@ const PropertiesSection: React.FC = () => {
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12 animate-scale-in">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12 animate-scale-in px-4">
           {filterOptions.map((option) => (
             <Button
               key={option.value}
@@ -143,7 +143,7 @@ const PropertiesSection: React.FC = () => {
                 setFilter(option.value);
                 setVisibleCount(6);
               }}
-              className={`rounded-full px-6 py-2 transition-all duration-300 ${
+              className={`rounded-full px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 text-sm sm:text-base transition-all duration-300 ${
                 filter === option.value
                   ? 'bg-gradient-to-r from-benin-green to-benin-blue text-white'
                   : 'border-gray-300 hover:border-benin-green hover:text-benin-green'
@@ -155,7 +155,7 @@ const PropertiesSection: React.FC = () => {
         </div>
 
         {/* Properties Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12">
           {visibleProperties.map((property, index) => (
             <div
               key={property.id}
