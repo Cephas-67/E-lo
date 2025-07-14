@@ -121,20 +121,20 @@ const PropertiesSection: React.FC = () => {
   };
 
   return (
-    <section id="proprietes" className="py-20 bg-gray-50 dark:bg-gray-900/50">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-12 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+    <section id="proprietes" className="py-16 lg:py-24 bg-muted/30">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12 lg:mb-16 animate-fade-in">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 lg:mb-6">
             <span className="gradient-text">Nos propriétés</span>
-            <span className="text-gray-900 dark:text-white"> disponibles</span>
+            <span className="text-foreground"> disponibles</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-lg lg:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Découvrez notre sélection de propriétés de qualité dans les meilleures localités du Bénin
           </p>
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12 animate-scale-in px-4">
+        <div className="flex flex-wrap justify-center gap-3 lg:gap-4 mb-12 lg:mb-16 animate-scale-in">
           {filterOptions.map((option) => (
             <Button
               key={option.value}
@@ -143,10 +143,10 @@ const PropertiesSection: React.FC = () => {
                 setFilter(option.value);
                 setVisibleCount(6);
               }}
-              className={`rounded-full px-3 sm:px-4 md:px-6 py-1.5 sm:py-2 text-sm sm:text-base transition-all duration-300 ${
+              className={`rounded-full px-4 lg:px-6 py-2 lg:py-3 text-sm lg:text-base font-medium transition-all duration-300 hover:scale-105 ${
                 filter === option.value
-                  ? 'bg-gradient-to-r from-benin-green to-benin-blue text-white'
-                  : 'border-gray-300 hover:border-benin-green hover:text-benin-green'
+                  ? 'bg-gradient-to-r from-benin-green to-benin-blue text-white shadow-lg'
+                  : 'border-border hover:border-benin-green hover:text-benin-green hover:bg-benin-green/5'
               }`}
             >
               {option.label}
@@ -155,11 +155,11 @@ const PropertiesSection: React.FC = () => {
         </div>
 
         {/* Properties Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8 xl:gap-10 mb-12 lg:mb-16">
           {visibleProperties.map((property, index) => (
             <div
               key={property.id}
-              className="animate-fade-in"
+              className="animate-fade-in group"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <PropertyCard property={property} />
@@ -174,21 +174,21 @@ const PropertiesSection: React.FC = () => {
               onClick={loadMore}
               size="lg"
               variant="outline"
-              className="border-2 border-benin-green text-benin-green hover:bg-benin-green hover:text-white px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105"
+              className="border-2 border-benin-green text-benin-green hover:bg-benin-green hover:text-white px-8 lg:px-12 py-3 lg:py-4 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
-              Voir plus de propriétés ({filteredProperties.length - visibleCount} restantes)
+              📋 Voir plus de propriétés ({filteredProperties.length - visibleCount} restantes)
             </Button>
           </div>
         )}
 
         {/* No results */}
         {filteredProperties.length === 0 && (
-          <div className="text-center py-12 animate-fade-in">
-            <div className="text-6xl mb-4">🏠</div>
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          <div className="text-center py-16 lg:py-20 animate-fade-in">
+            <div className="text-8xl lg:text-9xl mb-6">🏠</div>
+            <h3 className="text-2xl lg:text-3xl font-bold text-foreground mb-4">
               Aucune propriété trouvée
             </h3>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-lg text-muted-foreground max-w-md mx-auto">
               Essayez un autre filtre ou revenez plus tard pour de nouvelles annonces.
             </p>
           </div>

@@ -161,16 +161,14 @@ const Navigation: React.FC<NavigationProps> = ({
 
             {/* Mobile/Tablet Menu Button */}
             <div className="flex items-center space-x-2 lg:hidden">
-              {/* Auth Button for Mobile */}
-            {!isAuthenticated && (
               <Button
-                onClick={onAuthClick}
+                variant="ghost"
                 size="sm"
-                className="bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white font-medium px-3 py-1.5 rounded-full transition-all duration-300 text-xs whitespace-nowrap"
+                onClick={toggleTheme}
+                className="w-10 h-10 rounded-full"
               >
-                Connexion
+                {theme === 'light' ? '🌙' : '☀️'}
               </Button>
-            )}
             
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
