@@ -50,21 +50,21 @@ const Navigation: React.FC<NavigationProps> = ({
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled ? 'floating-nav shadow-xl backdrop-blur-md bg-white/90 dark:bg-gray-900/90' : 'bg-transparent'
     }`}>
-      <div className="container mx-auto px-3 sm:px-4 md:px-6 py-3 md:py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 lg:py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-gradient-to-r from-benin-green to-benin-blue rounded-lg md:rounded-xl flex items-center justify-center shadow-lg">
-              <span className="text-white font-bold text-sm sm:text-lg md:text-xl">e</span>
+          <Link to="/" className="flex items-center space-x-3 flex-shrink-0">
+            <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-r from-benin-green to-benin-blue rounded-xl flex items-center justify-center shadow-lg">
+              <span className="text-white font-bold text-lg lg:text-xl">e</span>
             </div>
-            <div className="hidden xs:block">
-              <h1 className="text-base sm:text-lg md:text-xl font-bold gradient-text">e-lo Bénin</h1>
-              <p className="text-xs text-gray-600 dark:text-gray-400 hidden sm:block">Location Immobilière</p>
+            <div>
+              <h1 className="text-lg lg:text-xl xl:text-2xl font-bold gradient-text">e-lo Bénin</h1>
+              <p className="text-xs lg:text-sm text-gray-600 dark:text-gray-400">Location Immobilière</p>
             </div>
           </Link>
 
-          {/* Navigation Links - Show on tablets and desktop */}
-          <div className="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-10">
+          {/* Navigation Links - Show on desktop */}
+          <div className="hidden lg:flex items-center space-x-8 xl:space-x-12">
             {isAuthenticated ? (
               <>
                 <Link 
@@ -114,9 +114,54 @@ const Navigation: React.FC<NavigationProps> = ({
             </a>
           </div>
 
-          {/* Mobile Menu Button - Show only on small screens */}
-          <div className="flex items-center space-x-2 md:hidden">
-            {/* Auth Button for Mobile */}
+          {/* Actions Section */}
+          <div className="flex items-center space-x-3">
+            {/* Desktop Actions */}
+            <div className="hidden lg:flex items-center space-x-4">
+              {isAuthenticated && user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                      <Avatar className="h-10 w-10">
+                        <AvatarFallback className="bg-benin-green text-white">
+                          {user.name.charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56" align="end" forceMount>
+                    <DropdownMenuItem asChild>
+                      <Link to="/profile" className="flex items-center">
+                        <User className="mr-2 h-4 w-4" />
+                        Mon Profil
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleLogout}>
+                      Se déconnecter
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button
+                  onClick={onAuthClick}
+                  className="bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white px-6 py-2 rounded-full transition-all duration-300"
+                >
+                  Se connecter
+                </Button>
+              )}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={toggleTheme}
+                className="w-10 h-10 rounded-full"
+              >
+                {theme === 'light' ? '🌙' : '☀️'}
+              </Button>
+            </div>
+
+            {/* Mobile/Tablet Menu Button */}
+            <div className="flex items-center space-x-2 lg:hidden">
+              {/* Auth Button for Mobile */}
             {!isAuthenticated && (
               <Button
                 onClick={onAuthClick}
@@ -371,6 +416,7 @@ const Navigation: React.FC<NavigationProps> = ({
                 </div>
               </SheetContent>
             </Sheet>
+            </div>
           </div>
 
           {/* Tablet Actions - Show only on medium screens */}
