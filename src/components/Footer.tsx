@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Facebook, Instagram, Linkedin, MessageCircle, MapPin, Phone, Mail, Clock } from 'lucide-react';
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
@@ -58,14 +59,38 @@ const Footer: React.FC = () => {
             </p>
             
             <div className="flex space-x-4">
-              {['📘', '📷', '🐦', '💼'].map((icon, index) => (
-                <button
-                  key={index}
-                  className="w-10 h-10 bg-gray-800 hover:bg-benin-green rounded-full flex items-center justify-center transition-colors duration-300"
-                >
-                  {icon}
-                </button>
-              ))}
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors duration-300"
+              >
+                <Facebook className="w-5 h-5 text-white" />
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-gray-800 hover:bg-pink-600 rounded-full flex items-center justify-center transition-colors duration-300"
+              >
+                <Instagram className="w-5 h-5 text-white" />
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-gray-800 hover:bg-blue-700 rounded-full flex items-center justify-center transition-colors duration-300"
+              >
+                <Linkedin className="w-5 h-5 text-white" />
+              </a>
+              <a
+                href="https://wa.me/22900000000"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-gray-800 hover:bg-green-600 rounded-full flex items-center justify-center transition-colors duration-300"
+              >
+                <MessageCircle className="w-5 h-5 text-white" />
+              </a>
             </div>
           </div>
 
