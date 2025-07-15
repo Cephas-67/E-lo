@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { toast } from '@/hooks/use-toast';
+import { Facebook, Instagram, Linkedin, MessageCircle, MapPin, Phone, Mail, Clock } from 'lucide-react';
 
 const ContactSection: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -40,25 +41,25 @@ const ContactSection: React.FC = () => {
 
   const contactInfo = [
     {
-      icon: '📍',
+      icon: MapPin,
       title: 'Adresse',
       content: 'Quartier Ganhi, Cotonou\nBénin',
       color: 'benin-green'
     },
     {
-      icon: '📞',
+      icon: Phone,
       title: 'Téléphone',
       content: '+229 XX XX XX XX\n+229 YY YY YY YY',
       color: 'benin-blue'
     },
     {
-      icon: '📧',
+      icon: Mail,
       title: 'Email',
       content: 'contact@elobenin.com\nsupport@elobenin.com',
       color: 'benin-yellow'
     },
     {
-      icon: '🕒',
+      icon: Clock,
       title: 'Horaires',
       content: 'Lun - Ven: 8h - 18h\nSam: 9h - 15h',
       color: 'benin-red'
@@ -173,10 +174,10 @@ const ContactSection: React.FC = () => {
                   key={index}
                   className="group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
                 >
-                  <CardContent className="p-6 text-center">
-                    <div className={`inline-flex items-center justify-center w-12 h-12 mb-4 text-2xl bg-${info.color}/10 rounded-full group-hover:bg-${info.color}/20 transition-colors duration-300`}>
-                      {info.icon}
-                    </div>
+                   <CardContent className="p-6 text-center">
+                     <div className={`inline-flex items-center justify-center w-12 h-12 mb-4 bg-${info.color}/10 rounded-full group-hover:bg-${info.color}/20 transition-colors duration-300`}>
+                       <info.icon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+                     </div>
                     
                     <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
                       {info.title}
@@ -198,14 +199,38 @@ const ContactSection: React.FC = () => {
                 </h4>
                 
                 <div className="flex justify-center space-x-4">
-                  {['📘', '📷', '🐦', '💼'].map((icon, index) => (
-                    <button
-                      key={index}
-                      className="w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center text-xl hover:scale-110 transition-transform duration-300 shadow-md hover:shadow-lg"
-                    >
-                      {icon}
-                    </button>
-                  ))}
+                  <a
+                    href="https://facebook.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300 shadow-md hover:shadow-lg hover:bg-blue-50 dark:hover:bg-blue-900"
+                  >
+                    <Facebook className="w-5 h-5 text-blue-600" />
+                  </a>
+                  <a
+                    href="https://instagram.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300 shadow-md hover:shadow-lg hover:bg-pink-50 dark:hover:bg-pink-900"
+                  >
+                    <Instagram className="w-5 h-5 text-pink-600" />
+                  </a>
+                  <a
+                    href="https://linkedin.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300 shadow-md hover:shadow-lg hover:bg-blue-50 dark:hover:bg-blue-900"
+                  >
+                    <Linkedin className="w-5 h-5 text-blue-700" />
+                  </a>
+                  <a
+                    href="https://wa.me/22900000000"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-12 h-12 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-300 shadow-md hover:shadow-lg hover:bg-green-50 dark:hover:bg-green-900"
+                  >
+                    <MessageCircle className="w-5 h-5 text-green-600" />
+                  </a>
                 </div>
               </CardContent>
             </Card>
@@ -215,7 +240,7 @@ const ContactSection: React.FC = () => {
               <CardContent className="p-0">
                 <div className="h-64 bg-gradient-to-br from-benin-green/20 to-benin-blue/20 rounded-lg flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-4xl mb-2">🗺️</div>
+                    <MapPin className="w-12 h-12 mx-auto mb-2 text-gray-600 dark:text-gray-300" />
                     <p className="text-gray-600 dark:text-gray-400 font-medium">
                       Carte interactive
                     </p>
