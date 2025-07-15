@@ -8,7 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { Link, useLocation } from 'react-router-dom';
-import { User, Home, MessageSquare, Bot, Search, FileText, Map, Mail, Menu, X } from 'lucide-react';
+import { User, Home, MessageSquare, Bot, Search, FileText, Map, Mail, Menu, X, Moon, Sun } from 'lucide-react';
 
 interface NavigationProps {
   onAuthClick: () => void;
@@ -118,10 +118,106 @@ const Navigation: React.FC<NavigationProps> = ({
           <div className="flex items-center space-x-3">
             {/* Desktop Actions */}
             <div className="hidden lg:flex items-center space-x-4">
+              {/* Action Buttons for authenticated users only */}
+              {isAuthenticated && (
+                <div className="flex items-center space-x-2 bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-1.5 shadow-lg">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={onRentalRequest}
+                        className="w-10 h-10 rounded-full bg-blue-500 text-white hover:bg-blue-600 shadow-md transition-all hover:scale-105"
+                      >
+                        <Search className="w-4 h-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Faire une demande de location</p>
+                    </TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={onRentalOffer}
+                        className="w-10 h-10 rounded-full bg-orange-500 text-white hover:bg-orange-600 shadow-md transition-all hover:scale-105"
+                      >
+                        <FileText className="w-4 h-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Faire une offre de location</p>
+                    </TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={onMapView}
+                        className="w-10 h-10 rounded-full bg-green-500 text-white hover:bg-green-600 shadow-md transition-all hover:scale-105"
+                      >
+                        <Map className="w-4 h-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Voir la carte</p>
+                    </TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={onAIToggle}
+                        className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-md transition-all hover:scale-105"
+                      >
+                        <Bot className="w-4 h-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Assistant IA</p>
+                    </TooltipContent>
+                  </Tooltip>
+
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={onChatToggle}
+                        className="w-10 h-10 rounded-full bg-benin-green text-white hover:bg-benin-green/90 shadow-md transition-all hover:scale-105"
+                      >
+                        <MessageSquare className="w-4 h-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Chat support</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+              )}
+
+              {/* Theme Toggle */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={toggleTheme}
+                className="w-10 h-10 rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105"
+              >
+                {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+              </Button>
+
+              {/* User Section */}
               {isAuthenticated && user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                    <Button variant="ghost" className="relative h-10 w-10 rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105">
                       <Avatar className="h-10 w-10">
                         <AvatarFallback className="bg-benin-green text-white">
                           {user.name.charAt(0).toUpperCase()}
@@ -129,14 +225,19 @@ const Navigation: React.FC<NavigationProps> = ({
                       </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuContent className="w-56" align="end">
+                    <div className="px-4 py-3 border-b">
+                      <p className="text-sm font-medium">{user.name}</p>
+                      <p className="text-xs text-muted-foreground">{user.email}</p>
+                      <p className="text-xs text-benin-green capitalize font-medium">{user.role}</p>
+                    </div>
                     <DropdownMenuItem asChild>
                       <Link to="/profile" className="flex items-center">
                         <User className="mr-2 h-4 w-4" />
                         Mon Profil
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleLogout}>
+                    <DropdownMenuItem onClick={handleLogout} className="text-red-600">
                       Se déconnecter
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -144,501 +245,336 @@ const Navigation: React.FC<NavigationProps> = ({
               ) : (
                 <Button
                   onClick={onAuthClick}
-                  className="bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white px-6 py-2 rounded-full transition-all duration-300"
+                  className="bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white px-6 py-2 rounded-full transition-all duration-300 shadow-lg hover:scale-105"
                 >
                   Se connecter
                 </Button>
               )}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={toggleTheme}
-                className="w-10 h-10 rounded-full"
-              >
-                {theme === 'light' ? '🌙' : '☀️'}
-              </Button>
             </div>
 
-            {/* Mobile/Tablet Menu Button */}
+            {/* Mobile/Tablet Actions */}
             <div className="flex items-center space-x-2 lg:hidden">
+              {/* Theme Toggle */}
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={toggleTheme}
-                className="w-10 h-10 rounded-full"
+                className="w-10 h-10 rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105"
               >
-                {theme === 'light' ? '🌙' : '☀️'}
+                {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
               </Button>
-            
-            <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="w-10 h-10 rounded-lg"
-                >
-                  <Menu className="w-5 h-5" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-80 p-0">
-                <div className="flex flex-col h-full">
-                  {/* Header */}
-                  <div className="flex items-center justify-between p-6 border-b">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gradient-to-r from-benin-green to-benin-blue rounded-lg flex items-center justify-center">
-                        <span className="text-white font-bold">e</span>
-                      </div>
-                      <div>
-                        <h2 className="font-bold gradient-text">e-lo Bénin</h2>
-                        <p className="text-xs text-muted-foreground">Location Immobilière</p>
-                      </div>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="w-8 h-8 rounded-lg"
-                    >
-                      <X className="w-4 h-4" />
-                    </Button>
-                  </div>
 
-                  {/* User Info for authenticated users */}
-                  {isAuthenticated && user && (
-                    <div className="p-6 border-b bg-muted/20">
-                      <div className="flex items-center space-x-3">
-                        <Avatar className="h-12 w-12">
-                          <AvatarFallback className="bg-benin-green text-white text-lg">
+              {/* User/Auth for medium screens */}
+              <div className="hidden md:block">
+                {isAuthenticated && user ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="relative h-10 w-10 rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105">
+                        <Avatar className="h-10 w-10">
+                          <AvatarFallback className="bg-benin-green text-white text-sm">
                             {user.name.charAt(0).toUpperCase()}
                           </AvatarFallback>
                         </Avatar>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-64 shadow-xl z-50" align="end">
+                      <div className="px-4 py-3 border-b">
+                        <p className="text-sm font-medium">{user.name}</p>
+                        <p className="text-xs text-muted-foreground">{user.email}</p>
+                        <p className="text-xs text-benin-green capitalize font-medium">{user.role}</p>
+                      </div>
+                      <DropdownMenuItem asChild>
+                        <Link to="/profile" className="flex items-center space-x-2 w-full">
+                          <User className="w-4 h-4" />
+                          <span>Mon Profil</span>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <button onClick={onRentalRequest} className="flex items-center space-x-2 w-full">
+                          <Search className="w-4 h-4" />
+                          <span>Demande de location</span>
+                        </button>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <button onClick={onRentalOffer} className="flex items-center space-x-2 w-full">
+                          <FileText className="w-4 h-4" />
+                          <span>Offre de location</span>
+                        </button>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <button onClick={onAIToggle} className="flex items-center space-x-2 w-full">
+                          <Bot className="w-4 h-4" />
+                          <span>Assistant IA</span>
+                        </button>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <button onClick={onChatToggle} className="flex items-center space-x-2 w-full">
+                          <MessageSquare className="w-4 h-4" />
+                          <span>Chat support</span>
+                        </button>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={handleLogout} className="text-red-600">
+                        Se déconnecter
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Button
+                    onClick={onAuthClick}
+                    size="sm"
+                    className="bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white font-medium px-4 py-2 rounded-full transition-all duration-300"
+                  >
+                    Se connecter
+                  </Button>
+                )}
+              </div>
+            
+              {/* Mobile Menu */}
+              <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-10 h-10 rounded-lg shadow-md hover:shadow-lg transition-all hover:scale-105"
+                  >
+                    <Menu className="w-5 h-5" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-80 p-0">
+                  <div className="flex flex-col h-full">
+                    {/* Header */}
+                    <div className="flex items-center justify-between p-6 border-b">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 bg-gradient-to-r from-benin-green to-benin-blue rounded-lg flex items-center justify-center">
+                          <span className="text-white font-bold">e</span>
+                        </div>
                         <div>
-                          <p className="font-medium">{user.name}</p>
-                          <p className="text-sm text-muted-foreground">{user.email}</p>
-                          <p className="text-xs text-benin-green capitalize font-medium">{user.role}</p>
+                          <h2 className="font-bold gradient-text">e-lo Bénin</h2>
+                          <p className="text-xs text-muted-foreground">Location Immobilière</p>
                         </div>
                       </div>
-                    </div>
-                  )}
-
-                  {/* Navigation Links */}
-                  <div className="flex-1 p-6">
-                    <nav className="space-y-4">
-                      {isAuthenticated ? (
-                        <>
-                          <Link 
-                            to="/dashboard" 
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
-                              location.pathname === '/dashboard' 
-                                ? 'bg-benin-green/10 text-benin-green' 
-                                : 'hover:bg-muted'
-                            }`}
-                          >
-                            <Home className="w-5 h-5" />
-                            <span>Tableau de Bord</span>
-                          </Link>
-                          <Link 
-                            to="/messages" 
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
-                              location.pathname === '/messages' 
-                                ? 'bg-benin-green/10 text-benin-green' 
-                                : 'hover:bg-muted'
-                            }`}
-                          >
-                            <Mail className="w-5 h-5" />
-                            <span>Messages</span>
-                          </Link>
-                          <Link 
-                            to="/profile" 
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
-                              location.pathname === '/profile' 
-                                ? 'bg-benin-green/10 text-benin-green' 
-                                : 'hover:bg-muted'
-                            }`}
-                          >
-                            <User className="w-5 h-5" />
-                            <span>Mon Profil</span>
-                          </Link>
-                          <a 
-                            href="#proprietes" 
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
-                          >
-                            <FileText className="w-5 h-5" />
-                            <span>Propriétés</span>
-                          </a>
-                          <a 
-                            href="#services" 
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
-                          >
-                            <Bot className="w-5 h-5" />
-                            <span>Services</span>
-                          </a>
-                        </>
-                      ) : (
-                        <>
-                          <a 
-                            href="#accueil" 
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
-                          >
-                            <Home className="w-5 h-5" />
-                            <span>Accueil</span>
-                          </a>
-                          <a 
-                            href="#proprietes" 
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
-                          >
-                            <FileText className="w-5 h-5" />
-                            <span>Propriétés</span>
-                          </a>
-                          <a 
-                            href="#services" 
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
-                          >
-                            <Bot className="w-5 h-5" />
-                            <span>Services</span>
-                          </a>
-                        </>
-                      )}
-                      <a 
-                        href="#contact" 
+                      <Button
+                        variant="ghost"
+                        size="sm"
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                        className="w-8 h-8 rounded-lg"
                       >
-                        <Mail className="w-5 h-5" />
-                        <span>Contact</span>
-                      </a>
-                    </nav>
+                        <X className="w-4 h-4" />
+                      </Button>
+                    </div>
 
-                    {/* Action Buttons for authenticated users */}
-                    {isAuthenticated && (
-                      <div className="mt-8 space-y-3">
-                        <h3 className="text-sm font-medium text-muted-foreground mb-3">Actions rapides</h3>
-                        <Button
-                          onClick={() => {
-                            onRentalRequest?.();
-                            setIsMobileMenuOpen(false);
-                          }}
-                          className="w-full justify-start bg-blue-500 hover:bg-blue-600 text-white"
-                        >
-                          <Search className="w-4 h-4 mr-2" />
-                          Demande de location
-                        </Button>
-                        <Button
-                          onClick={() => {
-                            onRentalOffer?.();
-                            setIsMobileMenuOpen(false);
-                          }}
-                          className="w-full justify-start bg-orange-500 hover:bg-orange-600 text-white"
-                        >
-                          <FileText className="w-4 h-4 mr-2" />
-                          Offre de location
-                        </Button>
-                        <Button
-                          onClick={() => {
-                            onMapView?.();
-                            setIsMobileMenuOpen(false);
-                          }}
-                          className="w-full justify-start bg-green-500 hover:bg-green-600 text-white"
-                        >
-                          <Map className="w-4 h-4 mr-2" />
-                          Voir la carte
-                        </Button>
-                        <Button
-                          onClick={() => {
-                            onAIToggle();
-                            setIsMobileMenuOpen(false);
-                          }}
-                          className="w-full justify-start bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
-                        >
-                          <Bot className="w-4 h-4 mr-2" />
-                          Assistant IA
-                        </Button>
-                        <Button
-                          onClick={() => {
-                            onChatToggle();
-                            setIsMobileMenuOpen(false);
-                          }}
-                          className="w-full justify-start bg-benin-green hover:bg-benin-green/90 text-white"
-                        >
-                          <MessageSquare className="w-4 h-4 mr-2" />
-                          Chat support
-                        </Button>
+                    {/* User Info for authenticated users */}
+                    {isAuthenticated && user && (
+                      <div className="p-6 border-b bg-muted/20">
+                        <div className="flex items-center space-x-3">
+                          <Avatar className="h-12 w-12">
+                            <AvatarFallback className="bg-benin-green text-white text-lg">
+                              {user.name.charAt(0).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="font-medium">{user.name}</p>
+                            <p className="text-sm text-muted-foreground">{user.email}</p>
+                            <p className="text-xs text-benin-green capitalize font-medium">{user.role}</p>
+                          </div>
+                        </div>
                       </div>
                     )}
-                  </div>
 
-                  {/* Footer */}
-                  <div className="p-6 border-t space-y-3">
-                    <Button
-                      variant="outline"
-                      onClick={toggleTheme}
-                      className="w-full justify-start"
-                    >
-                      {theme === 'light' ? '🌙' : '☀️'}
-                      <span className="ml-2">
-                        {theme === 'light' ? 'Mode sombre' : 'Mode clair'}
-                      </span>
-                    </Button>
-                    
-                    {isAuthenticated && user ? (
+                    {/* Navigation Links */}
+                    <div className="flex-1 p-6">
+                      <nav className="space-y-4">
+                        {isAuthenticated ? (
+                          <>
+                            <Link 
+                              to="/dashboard" 
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
+                                location.pathname === '/dashboard' 
+                                  ? 'bg-benin-green/10 text-benin-green' 
+                                  : 'hover:bg-muted'
+                              }`}
+                            >
+                              <Home className="w-5 h-5" />
+                              <span>Tableau de Bord</span>
+                            </Link>
+                            <Link 
+                              to="/messages" 
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
+                                location.pathname === '/messages' 
+                                  ? 'bg-benin-green/10 text-benin-green' 
+                                  : 'hover:bg-muted'
+                              }`}
+                            >
+                              <Mail className="w-5 h-5" />
+                              <span>Messages</span>
+                            </Link>
+                            <Link 
+                              to="/profile" 
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className={`flex items-center space-x-3 p-3 rounded-lg transition-colors ${
+                                location.pathname === '/profile' 
+                                  ? 'bg-benin-green/10 text-benin-green' 
+                                  : 'hover:bg-muted'
+                              }`}
+                            >
+                              <User className="w-5 h-5" />
+                              <span>Mon Profil</span>
+                            </Link>
+                            <a 
+                              href="#proprietes" 
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                            >
+                              <FileText className="w-5 h-5" />
+                              <span>Propriétés</span>
+                            </a>
+                            <a 
+                              href="#services" 
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                            >
+                              <Bot className="w-5 h-5" />
+                              <span>Services</span>
+                            </a>
+                          </>
+                        ) : (
+                          <>
+                            <a 
+                              href="#accueil" 
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                            >
+                              <Home className="w-5 h-5" />
+                              <span>Accueil</span>
+                            </a>
+                            <a 
+                              href="#proprietes" 
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                            >
+                              <FileText className="w-5 h-5" />
+                              <span>Propriétés</span>
+                            </a>
+                            <a 
+                              href="#services" 
+                              onClick={() => setIsMobileMenuOpen(false)}
+                              className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                            >
+                              <Bot className="w-5 h-5" />
+                              <span>Services</span>
+                            </a>
+                          </>
+                        )}
+                        <a 
+                          href="#contact" 
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors"
+                        >
+                          <Mail className="w-5 h-5" />
+                          <span>Contact</span>
+                        </a>
+                      </nav>
+
+                      {/* Action Buttons for authenticated users */}
+                      {isAuthenticated && (
+                        <div className="mt-8 space-y-3">
+                          <h3 className="text-sm font-medium text-muted-foreground mb-3">Actions rapides</h3>
+                          <Button
+                            onClick={() => {
+                              onRentalRequest?.();
+                              setIsMobileMenuOpen(false);
+                            }}
+                            className="w-full justify-start bg-blue-500 hover:bg-blue-600 text-white"
+                          >
+                            <Search className="w-4 h-4 mr-2" />
+                            Demande de location
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              onRentalOffer?.();
+                              setIsMobileMenuOpen(false);
+                            }}
+                            className="w-full justify-start bg-orange-500 hover:bg-orange-600 text-white"
+                          >
+                            <FileText className="w-4 h-4 mr-2" />
+                            Offre de location
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              onMapView?.();
+                              setIsMobileMenuOpen(false);
+                            }}
+                            className="w-full justify-start bg-green-500 hover:bg-green-600 text-white"
+                          >
+                            <Map className="w-4 h-4 mr-2" />
+                            Voir la carte
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              onAIToggle();
+                              setIsMobileMenuOpen(false);
+                            }}
+                            className="w-full justify-start bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                          >
+                            <Bot className="w-4 h-4 mr-2" />
+                            Assistant IA
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              onChatToggle();
+                              setIsMobileMenuOpen(false);
+                            }}
+                            className="w-full justify-start bg-benin-green hover:bg-benin-green/90 text-white"
+                          >
+                            <MessageSquare className="w-4 h-4 mr-2" />
+                            Chat support
+                          </Button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Footer */}
+                    <div className="p-6 border-t space-y-3">
                       <Button
                         variant="outline"
-                        onClick={() => {
-                          handleLogout();
-                          setIsMobileMenuOpen(false);
-                        }}
-                        className="w-full justify-start text-red-600 border-red-200 hover:bg-red-50"
+                        onClick={toggleTheme}
+                        className="w-full justify-start"
                       >
-                        Se déconnecter
+                        {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
+                        <span className="ml-2">
+                          {theme === 'light' ? 'Mode sombre' : 'Mode clair'}
+                        </span>
                       </Button>
-                    ) : (
-                      <Button
-                        onClick={() => {
-                          onAuthClick();
-                          setIsMobileMenuOpen(false);
-                        }}
-                        className="w-full bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white"
-                      >
-                        Se connecter
-                      </Button>
-                    )}
+                      
+                      {isAuthenticated && user ? (
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            handleLogout();
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="w-full justify-start text-red-600 border-red-200 hover:bg-red-50"
+                        >
+                          Se déconnecter
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={() => {
+                            onAuthClick();
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="w-full bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white"
+                        >
+                          Se connecter
+                        </Button>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </SheetContent>
-            </Sheet>
+                </SheetContent>
+              </Sheet>
             </div>
-          </div>
-
-          {/* Tablet Actions - Show only on medium screens */}
-          <div className="hidden md:flex lg:hidden items-center space-x-2">
-            {/* Theme Toggle for tablets */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleTheme}
-              className="w-10 h-10 rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105"
-            >
-              {theme === 'light' ? '🌙' : '☀️'}
-            </Button>
-
-            {/* User Section for tablets */}
-            {isAuthenticated && user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105">
-                    <Avatar className="h-10 w-10">
-                      <AvatarFallback className="bg-benin-green text-white text-sm">
-                        {user.name.charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-64 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-xl z-50" align="end">
-                  <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                    <p className="text-sm font-medium">{user.name}</p>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">{user.email}</p>
-                    <p className="text-xs text-benin-green capitalize font-medium">{user.role}</p>
-                  </div>
-                  <DropdownMenuItem asChild>
-                    <Link to="/profile" className="flex items-center space-x-2 w-full">
-                      <User className="w-4 h-4" />
-                      <span>Mon Profil</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <button 
-                      onClick={onRentalRequest}
-                      className="flex items-center space-x-2 w-full"
-                    >
-                      <Search className="w-4 h-4" />
-                      <span>Demande de location</span>
-                    </button>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <button 
-                      onClick={onRentalOffer}
-                      className="flex items-center space-x-2 w-full"
-                    >
-                      <FileText className="w-4 h-4" />
-                      <span>Offre de location</span>
-                    </button>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <button 
-                      onClick={onAIToggle}
-                      className="flex items-center space-x-2 w-full"
-                    >
-                      <Bot className="w-4 h-4" />
-                      <span>Assistant IA</span>
-                    </button>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <button 
-                      onClick={onChatToggle}
-                      className="flex items-center space-x-2 w-full"
-                    >
-                      <MessageSquare className="w-4 h-4" />
-                      <span>Chat support</span>
-                    </button>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleLogout} className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20">
-                    Se déconnecter
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button
-                onClick={onAuthClick}
-                size="sm"
-                className="bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white font-medium px-4 py-2 rounded-full transition-all duration-300"
-              >
-                Se connecter
-              </Button>
-            )}
-          </div>
-
-          {/* Desktop Actions - Show only on large screens */}
-          <div className="hidden lg:flex items-center space-x-3 xl:space-x-4">
-            {/* Action Buttons for authenticated users only */}
-            {isAuthenticated && (
-              <div className="flex items-center space-x-2 xl:space-x-3 bg-white/10 dark:bg-gray-800/50 backdrop-blur-sm rounded-2xl p-1.5 xl:p-2 shadow-lg">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={onRentalRequest}
-                      className="w-12 h-12 rounded-full bg-blue-500 text-white hover:bg-blue-600 shadow-md transition-all hover:scale-105"
-                    >
-                      <Search className="w-5 h-5" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Faire une demande de location</p>
-                  </TooltipContent>
-                </Tooltip>
-
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={onRentalOffer}
-                      className="w-12 h-12 rounded-full bg-orange-500 text-white hover:bg-orange-600 shadow-md transition-all hover:scale-105"
-                    >
-                      <FileText className="w-5 h-5" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Faire une offre de location</p>
-                  </TooltipContent>
-                </Tooltip>
-
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={onMapView}
-                      className="w-12 h-12 rounded-full bg-green-500 text-white hover:bg-green-600 shadow-md transition-all hover:scale-105"
-                    >
-                      <Map className="w-5 h-5" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Voir la carte</p>
-                  </TooltipContent>
-                </Tooltip>
-
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={onAIToggle}
-                      className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 shadow-md transition-all hover:scale-105"
-                    >
-                      <Bot className="w-5 h-5" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Assistant IA</p>
-                  </TooltipContent>
-                </Tooltip>
-
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={onChatToggle}
-                      className="w-12 h-12 rounded-full bg-benin-green text-white hover:bg-benin-green/90 shadow-md transition-all hover:scale-105"
-                    >
-                      <MessageSquare className="w-5 h-5" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Chat support</p>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-            )}
-
-            {/* Theme Toggle */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleTheme}
-              className="w-12 h-12 rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105"
-            >
-              {theme === 'light' ? '🌙' : '☀️'}
-            </Button>
-
-            {/* User Section */}
-            {isAuthenticated && user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-12 w-12 rounded-full shadow-md hover:shadow-lg transition-all hover:scale-105">
-                    <Avatar className="h-12 w-12">
-                      <AvatarFallback className="bg-benin-green text-white text-lg">
-                        {user.name.charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-64 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 shadow-xl" align="end">
-                  <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-                    <p className="text-sm font-medium">{user.name}</p>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">{user.email}</p>
-                    <p className="text-xs text-benin-green capitalize font-medium">{user.role}</p>
-                  </div>
-                  <DropdownMenuItem asChild>
-                    <Link to="/profile" className="flex items-center space-x-2 w-full">
-                      <User className="w-4 h-4" />
-                      <span>Mon Profil</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleLogout} className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20">
-                    Se déconnecter
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button
-                onClick={onAuthClick}
-                className="bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white font-medium px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg"
-              >
-                Se connecter
-              </Button>
-            )}
           </div>
         </div>
       </div>
