@@ -78,7 +78,7 @@ const ContactSection: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-12 justify-items-center max-w-7xl mx-auto">
           {/* Contact Form */}
           <Card className="animate-slide-in-left">
             <CardContent className="p-8">
@@ -87,7 +87,7 @@ const ContactSection: React.FC = () => {
               </h3>
               
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
                     <Label htmlFor="name">Nom complet *</Label>
                     <Input
@@ -112,7 +112,7 @@ const ContactSection: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                   <div>
                     <Label htmlFor="phone">Téléphone</Label>
                     <Input
@@ -167,7 +167,7 @@ const ContactSection: React.FC = () => {
 
           {/* Contact Info */}
           <div className="space-y-6 animate-slide-in-right">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 justify-items-center">
               {contactInfo.map((info, index) => (
                 <Card
                   key={index}
