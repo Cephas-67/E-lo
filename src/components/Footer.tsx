@@ -36,12 +36,12 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="container mx-auto px-4 py-16">
+    <footer className="bg-gray-900 text-white relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-8 lg:gap-12 mb-12 lg:mb-16 justify-items-start">
           {/* Brand Section */}
-          <div className="lg:col-span-2">
+          <div className="sm:col-span-2 lg:col-span-2 w-full">
             <div className="flex items-center space-x-2 mb-4">
               <div className="w-10 h-10 bg-gradient-to-r from-benin-green to-benin-blue rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-xl">e</span>
@@ -90,20 +90,20 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Newsletter Section */}
-        <div className="bg-gradient-to-r from-benin-green/10 to-benin-blue/10 rounded-2xl p-8 mb-12">
-          <div className="text-center">
-            <h4 className="text-2xl font-bold mb-2">Restez informé</h4>
-            <p className="text-gray-400 mb-6">
+        <div className="bg-gradient-to-r from-benin-green/10 to-benin-blue/10 rounded-xl lg:rounded-2xl p-6 lg:p-8 mb-8 lg:mb-12">
+          <div className="text-center max-w-2xl mx-auto">
+            <h4 className="text-xl lg:text-2xl font-bold mb-2 lg:mb-4">Restez informé</h4>
+            <p className="text-gray-400 mb-4 lg:mb-6 text-sm lg:text-base">
               Recevez les dernières offres et actualités immobilières du Bénin
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+            <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 max-w-md mx-auto">
               <input
                 type="email"
                 placeholder="Votre adresse email"
-                className="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-benin-green focus:border-transparent"
+                className="flex-1 px-4 py-2.5 lg:py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-benin-green focus:border-transparent text-sm lg:text-base"
               />
-              <button className="bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105">
+              <button className="bg-gradient-to-r from-benin-green to-benin-blue hover:from-benin-green/90 hover:to-benin-blue/90 text-white px-4 lg:px-6 py-2.5 lg:py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 text-sm lg:text-base">
                 S'abonner
               </button>
             </div>
@@ -111,9 +111,9 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-800 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-center md:text-left">
+        <div className="border-t border-gray-800 pt-6 lg:pt-8">
+          <div className="flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0 gap-4">
+            <div className="text-center lg:text-left">
               <p className="text-gray-400 text-sm">
                 © {currentYear} e-lo Bénin. Tous droits réservés.
               </p>
@@ -122,7 +122,7 @@ const Footer: React.FC = () => {
               </p>
             </div>
             
-            <div className="flex space-x-6 text-sm">
+            <div className="flex flex-col sm:flex-row items-center gap-4 lg:gap-6 text-xs lg:text-sm">
               <a href="#" className="text-gray-400 hover:text-white transition-colors duration-300">
                 Politique de confidentialité
               </a>
@@ -138,8 +138,8 @@ const Footer: React.FC = () => {
       </div>
 
       {/* Decorative Elements */}
-      <div className="absolute bottom-0 left-0 w-32 h-32 bg-benin-green/5 rounded-full -mb-16 -ml-16"></div>
-      <div className="absolute bottom-0 right-0 w-24 h-24 bg-benin-blue/5 rounded-full -mb-12 -mr-12"></div>
+      <div className="absolute bottom-0 left-0 w-20 lg:w-32 h-20 lg:h-32 bg-benin-green/5 rounded-full -mb-10 lg:-mb-16 -ml-10 lg:-ml-16"></div>
+      <div className="absolute bottom-0 right-0 w-16 lg:w-24 h-16 lg:h-24 bg-benin-blue/5 rounded-full -mb-8 lg:-mb-12 -mr-8 lg:-mr-12"></div>
     </footer>
   );
 };
